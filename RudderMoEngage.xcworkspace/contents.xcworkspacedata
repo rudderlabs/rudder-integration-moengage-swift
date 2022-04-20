@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:/Users/abhishekpandey/Documents/Rudder/Rudder-Integrations/iOS/Swift-Migration/rudder-integration-moengage-swift/RudderMoEngage.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Examples/SampleAppObjC/SampleAppObjC.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Examples/SampleAppSwift/SampleAppSwift.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+</Workspace>
