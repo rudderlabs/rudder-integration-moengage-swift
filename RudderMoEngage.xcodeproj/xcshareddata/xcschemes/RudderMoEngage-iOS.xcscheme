@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1320"
+   LastUpgradeVersion = "1330"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "ED2A28EA2770560400646788"
                BuildableName = "RudderMoEngage.framework"
-               BlueprintName = "RudderMoEngage1"
-               ReferencedContainer = "container:RudderMoEngage1.xcodeproj">
+               BlueprintName = "RudderMoEngage"
+               ReferencedContainer = "container:RudderMoEngage.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -52,8 +52,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "ED2A28EA2770560400646788"
             BuildableName = "RudderMoEngage.framework"
-            BlueprintName = "RudderMoEngage1"
-            ReferencedContainer = "container:RudderMoEngage1.xcodeproj">
+            BlueprintName = "RudderMoEngage"
+            ReferencedContainer = "container:RudderMoEngage.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
