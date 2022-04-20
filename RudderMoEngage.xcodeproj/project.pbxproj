@@ -9,19 +9,19 @@
 /* Begin PBXBuildFile section */
 		8C89A52028104E200098F12F /* RudderMoEngage.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C89A51F28104E200098F12F /* RudderMoEngage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8C89A52228104E5F0098F12F /* RSMoEngageDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C89A52128104E5F0098F12F /* RSMoEngageDestination.swift */; };
-		9454451FED1F3E29EC1E53F0 /* Pods_RudderMoEngage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ACE20DD42400A6CE6E8E079 /* Pods_RudderMoEngage.framework */; };
+		A5DDAD1DEC7F79608A14C30F /* Pods_RudderMoEngage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EB6313433D8B6FDDB4366A1 /* Pods_RudderMoEngage.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		054EDBFB633075584D615BE9 /* Pods-RudderMoEngage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderMoEngage.debug.xcconfig"; path = "Target Support Files/Pods-RudderMoEngage/Pods-RudderMoEngage.debug.xcconfig"; sourceTree = "<group>"; };
-		1ACE20DD42400A6CE6E8E079 /* Pods_RudderMoEngage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RudderMoEngage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		293022386F52D23A0DE0BB38 /* Pods-RudderMoEngage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderMoEngage.release.xcconfig"; path = "Target Support Files/Pods-RudderMoEngage/Pods-RudderMoEngage.release.xcconfig"; sourceTree = "<group>"; };
 		8C89A51F28104E200098F12F /* RudderMoEngage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RudderMoEngage.h; path = Sources/SDKInfo/RudderMoEngage.h; sourceTree = "<group>"; };
 		8C89A52128104E5F0098F12F /* RSMoEngageDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RSMoEngageDestination.swift; path = Sources/Classes/RSMoEngageDestination.swift; sourceTree = "<group>"; };
 		8C89A5252810513A0098F12F /* RudderMoEngage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RudderMoEngage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C89A52728105D380098F12F /* RudderMoEngage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RudderMoEngage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CC9139F280FF5A000761E68 /* RudderMoEngage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RudderMoEngage.h; path = Sources/SDKInfo/RudderMoEngage.h; sourceTree = "<group>"; };
 		8CE2AB83280FDDCB00321A8D /* RudderMoEngage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RudderMoEngage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EB6313433D8B6FDDB4366A1 /* Pods_RudderMoEngage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RudderMoEngage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7A3250D6660BD5B5BF637B1 /* Pods-RudderMoEngage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderMoEngage.release.xcconfig"; path = "Target Support Files/Pods-RudderMoEngage/Pods-RudderMoEngage.release.xcconfig"; sourceTree = "<group>"; };
+		E33D91787AC12AD0CC89BEE1 /* Pods-RudderMoEngage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderMoEngage.debug.xcconfig"; path = "Target Support Files/Pods-RudderMoEngage/Pods-RudderMoEngage.debug.xcconfig"; sourceTree = "<group>"; };
 		ED2A28EB2770560400646788 /* RudderMoEngage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RudderMoEngage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED2A28F72770570400646788 /* RudderMoEngage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RudderMoEngage.h; sourceTree = "<group>"; };
 		ED2A28FA2770591E00646788 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -36,7 +36,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9454451FED1F3E29EC1E53F0 /* Pods_RudderMoEngage.framework in Frameworks */,
+				A5DDAD1DEC7F79608A14C30F /* Pods_RudderMoEngage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,8 +46,8 @@
 		208F25C796D8593BF8DAB48E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				054EDBFB633075584D615BE9 /* Pods-RudderMoEngage.debug.xcconfig */,
-				293022386F52D23A0DE0BB38 /* Pods-RudderMoEngage.release.xcconfig */,
+				E33D91787AC12AD0CC89BEE1 /* Pods-RudderMoEngage.debug.xcconfig */,
+				D7A3250D6660BD5B5BF637B1 /* Pods-RudderMoEngage.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -58,7 +58,7 @@
 				8C89A52728105D380098F12F /* RudderMoEngage.framework */,
 				8C89A5252810513A0098F12F /* RudderMoEngage.framework */,
 				8CE2AB83280FDDCB00321A8D /* RudderMoEngage.framework */,
-				1ACE20DD42400A6CE6E8E079 /* Pods_RudderMoEngage.framework */,
+				8EB6313433D8B6FDDB4366A1 /* Pods_RudderMoEngage.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -131,7 +131,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = ED2A28F22770560400646788 /* Build configuration list for PBXNativeTarget "RudderMoEngage" */;
 			buildPhases = (
-				A369D0C01136ADBE2E6CC0AF /* [CP] Check Pods Manifest.lock */,
+				11E69025E0B33B11A21723A2 /* [CP] Check Pods Manifest.lock */,
 				ED2A28E62770560400646788 /* Headers */,
 				8CFC551428042AB000C41CEA /* Swift Lint */,
 				ED2A28E72770560400646788 /* Sources */,
@@ -191,25 +191,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		8CFC551428042AB000C41CEA /* Swift Lint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Swift Lint";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		A369D0C01136ADBE2E6CC0AF /* [CP] Check Pods Manifest.lock */ = {
+		11E69025E0B33B11A21723A2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -230,6 +212,24 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		8CFC551428042AB000C41CEA /* Swift Lint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Lint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -369,7 +369,7 @@
 		};
 		ED2A28F32770560400646788 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 054EDBFB633075584D615BE9 /* Pods-RudderMoEngage.debug.xcconfig */;
+			baseConfigurationReference = E33D91787AC12AD0CC89BEE1 /* Pods-RudderMoEngage.debug.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -403,7 +403,7 @@
 		};
 		ED2A28F42770560400646788 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 293022386F52D23A0DE0BB38 /* Pods-RudderMoEngage.release.xcconfig */;
+			baseConfigurationReference = D7A3250D6660BD5B5BF637B1 /* Pods-RudderMoEngage.release.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
