@@ -10,7 +10,6 @@ import UIKit
 import RudderStack
 import RudderMoEngage
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -22,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let config: RSConfig = RSConfig(writeKey: "27COeQCO3BS2WMw8CJUqYRC5hL7")
             .dataPlaneURL("https://rudderstacbumvdrexzj.dataplane.rudderstack.com")
             .loglevel(.none)
-            .trackLifecycleEvents(false)
+            .trackLifecycleEvents(true)
             .recordScreenViews(false)
 
         client = RSClient(config: config)
@@ -37,37 +36,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func sendEvents() {
         sendIdentifyEvents()
         sendTrackEvents()
+//        sendAlias()
+    }
+    
+    func sendAlias() {
+        client?.identify("iOS User before Alias")
+        client?.track("Empty track events")
+        client?.alias("New iOS user id")
+        client?.track("Empty track events")
     }
 
     func sendTrackEvents() {
         client?.track("Empty track events")
-        // Revenue Event
-        client?.track("Order Completed", properties: [
-            "revenue": 1000.0,
-            "currency": "INR"
-        ])
         client?.track("Checkout Started", properties: [
             "Key": "Value",
             "order_id": "12345",
-            "Key-1": "value-1",
-            "Key-2": "value-2",
-            "products": [[
-                "productId": 123,
-                "name": "Random Name",
-                "sku": "123",
-                "price": 123.45,
-                "quantity": "20",
-                "category": "Shopping",
-                "url": "www.example.com",
-                "image_url": "www.example.com"
-            ]]
+            "date": Date(),
+            "dateInStringFormat": "2016-04-14T10:44:00.000",
+            "key-2": 1234,
+            "key-3": true
         ])
     }
 
     func sendIdentifyEvents() {
-        client?.identify("iOS User")
+//        client?.identify("iOS Empty User")
+//        client?.identify("iOS User with Empty Traits", traits: [:])
+        client?.identify("iOS User with traits 2", traits: [
+            "key": "Value",
+            "date": Date(),
+            "email": "random@example.com",
+            "name": "Full Name",
+            "phone": 1234567890,
+            "firstName": "FName",
+            "lastName": "LName",
+            "gender": "Male",
+            "birthday": "2016-04-14T10:44:00.000",  // In EPOCH time format
+            "address": "Random address",
+            "age": 40
+        ])
     }
-
+    
+    
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

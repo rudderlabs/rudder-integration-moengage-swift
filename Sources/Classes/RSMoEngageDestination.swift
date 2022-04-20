@@ -21,8 +21,7 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
             client?.log(message: "Failed to Initialize MoEngage Factory", logLevel: .warning)
             return
         }
-        
-        //check if debug mode is on or off
+        // Check if debug mode is on or off
 #if DEBUG
         MoEngage.sharedInstance().initializeDev(withAppID: moEngageConfig.apiId)
 #else
@@ -51,15 +50,15 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
             MoEngage.sharedInstance().setUserUniqueID(userId)
         }
         
-        if let traits = filterProperties(properties: message.traits) {
-            handleTraits(traits: traits)
+        if let traits = message.traits, !traits.isEmpty {
+            handle(traits: traits)
         }
         return message
     }
 
     func track(message: TrackMessage) -> TrackMessage? {
         if !message.event.isEmpty {
-            switch (message.event) {
+            switch message.event {
             case "Application Installed": MoEngage.sharedInstance().appStatus(INSTALL)
             case "Application Updated": MoEngage.sharedInstance().appStatus(UPDATE)
             default:
@@ -68,11 +67,14 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
                     for (key, value) in properties {
                         switch value {
                         case let val as String:
-                            if let date: Date = dateFromISOdateStr(isoDateStr: val) {
+                            // Try to convert the value from String to Date
+                            if let date: Date = dateFrom(isoDateStr: val) {
                                 eventProperties.addDateAttribute(date, withName: key)
-                                break;
+                                break
                             }
                             eventProperties.addAttribute(val, withName: key)
+                        case let date as Date:
+                            eventProperties.addDateAttribute(date, withName: key)
                         case let val as NSNumber:
                             eventProperties.addAttribute(val, withName: key)
                         default: break
@@ -81,6 +83,7 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
                     MoEngage.sharedInstance().trackEvent(message.event, with: eventProperties)
                     break
                 }
+                // If message.properties is empty
                 MoEngage.sharedInstance().trackEvent(message.event, with: nil)
             }
         }
@@ -155,61 +158,48 @@ extension RSMoEngageDestination: RSPushNotifications {
 // MARK: - Support methods
 
 extension RSMoEngageDestination {
-    func filterProperties(properties: [String: Any]?) -> [String: Any]? {
-        var filteredProperties: [String: Any]?
-        if let properties = properties {
-            filteredProperties = [String: Any]()
-            for (key, value) in properties {
-                switch value {
-                case let val as String:
-                    filteredProperties?[key] = val
-                case let val as NSNumber:
-                    filteredProperties?[key] = val
-                default: break
+    
+    func handle(traits: [String: Any]) {
+        for (key, value) in traits {
+            if value is String || value is NSNumber || value is Date {
+                switch key {
+                case "email": MoEngage.sharedInstance().setUserEmailID(value as? String)
+                case "name": MoEngage.sharedInstance().setUserName(value as? String)
+                case "phone": MoEngage.sharedInstance().setUserMobileNo(value)
+                case "firstName": MoEngage.sharedInstance().setUserAttribute(value, forKey: USER_ATTRIBUTE_USER_FIRST_NAME)
+                case "lastName": MoEngage.sharedInstance().setUserLastName(value as? String)
+                case "gender": MoEngage.sharedInstance().setUserAttribute(value, forKey: USER_ATTRIBUTE_USER_GENDER)
+                case "birthday": identifyDateUserAttribute(value: value, attr_name: USER_ATTRIBUTE_USER_BDAY)
+                case "address": MoEngage.sharedInstance().setUserAttribute(value, forKey: "address")
+                case "age": MoEngage.sharedInstance().setUserAttribute(value, forKey: "age")
+                default: identifyDateUserAttribute(value: value, attr_name: key)
                 }
             }
         }
-        return filteredProperties
     }
     
-    func handleTraits(traits: [String: Any]) {
-        if traits.isEmpty {
-            return
-        }
-        for (key, value) in traits {
-            switch key {
-            case "email": MoEngage.sharedInstance().setUserEmailID(value as? String)
-            case "name": MoEngage.sharedInstance().setUserName(value as? String)
-            case "phone": MoEngage.sharedInstance().setUserMobileNo(value)
-            case "firstName": MoEngage.sharedInstance().setUserAttribute(value, forKey: USER_ATTRIBUTE_USER_FIRST_NAME)
-            case "lastName": MoEngage.sharedInstance().setUserLastName(value as? String)
-            case "gender": MoEngage.sharedInstance().setUserAttribute(value, forKey: USER_ATTRIBUTE_USER_GENDER)
-            case "birthday": identifyDateUserAttribute(value, attr_name: USER_ATTRIBUTE_USER_BDAY)
-            case "address": MoEngage.sharedInstance().setUserAttribute(value, forKey: "address")
-            case "age": MoEngage.sharedInstance().setUserAttribute(value, forKey: "age")
-            default: identifyDateUserAttribute(value, attr_name: key)
-            }
-        }
-    }
-    
-    func identifyDateUserAttribute(_ value: Any?, attr_name: String?) {
+    func identifyDateUserAttribute(value: Any?, attr_name: String?) {
         if let attr_name = attr_name {
-            // Verify if the value is of type Date or not
             if let value = value as? String {
-                if let convertedDate = dateFromISOdateStr(isoDateStr: value) {
+                // Verify if the value is of type Date or not
+                if let convertedDate = dateFrom(isoDateStr: value) {
+                    // Track UserAttribute using Epoch value. Refer here: https://developers.moengage.com/hc/en-us/articles/4403905883796-Tracking-User-Attributes
                     MoEngage.sharedInstance().setUserAttributeTimestamp(convertedDate.timeIntervalSince1970, forKey: attr_name)
                     return
                 }
+            }
+            if let value = value as? Date {
+                MoEngage.sharedInstance().setUserAttributeDate(value, forKey: attr_name)
             }
             MoEngage.sharedInstance().setUserAttribute(value, forKey: attr_name)
         }
     }
     
-    func dateFromISOdateStr(isoDateStr: Any?) -> Date? {
+    func dateFrom(isoDateStr: Any?) -> Date? {
         if let date: String = isoDateStr as? String, !date.isEmpty {
             let dateFormatter = DateFormatter()
             dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-            dateFormatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.SSS'Z'"
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
             dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
             return dateFormatter.date(from: date) ?? nil
         }
