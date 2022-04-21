@@ -63,7 +63,7 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
             case "Application Updated": MoEngage.sharedInstance().appStatus(UPDATE)
             default:
                 if let properties = message.properties, !properties.isEmpty {
-                    let eventProperties: MOProperties = MOProperties.init()
+                    let eventProperties: MOProperties = MOProperties()
                     for (key, value) in properties {
                         switch value {
                         case let val as String:
