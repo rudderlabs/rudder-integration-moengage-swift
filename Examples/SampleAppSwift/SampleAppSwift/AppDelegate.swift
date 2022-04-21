@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func sendEvents() {
         sendIdentifyEvents()
         sendTrackEvents()
-//        sendAlias()
+        sendAlias()
     }
     
     func sendAlias() {
@@ -59,8 +59,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func sendIdentifyEvents() {
-//        client?.identify("iOS Empty User")
-//        client?.identify("iOS User with Empty Traits", traits: [:])
         client?.identify("iOS User with traits 2", traits: [
             "key": "Value",
             "date": Date(),
@@ -75,7 +73,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "age": 40
         ])
     }
-    
     
     // MARK: UISceneSession Lifecycle
 
