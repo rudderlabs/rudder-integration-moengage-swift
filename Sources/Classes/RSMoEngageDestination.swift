@@ -17,7 +17,7 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
 
     func update(serverConfig: RSServerConfig, type: UpdateType) {
         guard type == .initial else { return }
-        guard let moEngageConfig: RudderMoEngageConfig = serverConfig.getConfig(forPlugin: self) else {
+        guard let moEngageConfig: RSKeys = serverConfig.getConfig(forPlugin: self) else {
             client?.log(message: "Failed to Initialize MoEngage Factory", logLevel: .warning)
             return
         }
@@ -121,17 +121,7 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
     }
 }
 
-// MARK: - Application Life cycle methods
-
-func applicationDidFinishLaunching(_ notification: Notification) {
-    DispatchQueue.main.async(execute: {
-        if UIApplication.shared.isRegisteredForRemoteNotifications {
-            UIApplication.shared.registerForRemoteNotifications()
-        }
-    })
-}
-
-#if os(iOS) || os(tvOS) || targetEnvironment(macCatalyst)
+#if os(iOS) || targetEnvironment(macCatalyst)
 
 // MARK: - Push Notification methods
 
@@ -207,7 +197,7 @@ extension RSMoEngageDestination {
     }
 }
 
-struct RudderMoEngageConfig: Codable {
+struct RSKeys: Codable {
     private let _apiId: String?
     var apiId: String {
         return _apiId ?? ""
