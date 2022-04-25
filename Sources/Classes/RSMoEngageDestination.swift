@@ -31,10 +31,8 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
             MoEngage.redirectData(to: MOE_REGION_EU)
         }
         
-        if #available(iOS 10.0, *) {
-            if UNUserNotificationCenter.current().delegate == nil {
-               UNUserNotificationCenter.current().delegate = self
-            }
+        if UNUserNotificationCenter.current().delegate == nil {
+           UNUserNotificationCenter.current().delegate = self
         }
         
         client?.log(message: "Initializing MoEngage SDK", logLevel: .debug)
@@ -140,7 +138,6 @@ extension RSMoEngageDestination {
         completionHandler([.sound, .alert])
     }
 
-    @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         MoEngage.sharedInstance().userNotificationCenter(center, didReceive: response)
         completionHandler()
