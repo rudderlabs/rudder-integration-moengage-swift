@@ -17,7 +17,7 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
 
     func update(serverConfig: RSServerConfig, type: UpdateType) {
         guard type == .initial else { return }
-        guard let moEngageConfig: RSKeys = serverConfig.getConfig(forPlugin: self) else {
+        guard let moEngageConfig: RSMoEngageConfig = serverConfig.getConfig(forPlugin: self) else {
             client?.log(message: "Failed to Initialize MoEngage Factory", logLevel: .warning)
             return
         }
@@ -59,8 +59,8 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
     func track(message: TrackMessage) -> TrackMessage? {
         if !message.event.isEmpty {
             switch message.event {
-            case "Application Installed": MoEngage.sharedInstance().appStatus(INSTALL)
-            case "Application Updated": MoEngage.sharedInstance().appStatus(UPDATE)
+            case RSEvents.LifeCycle.applicationInstalled: MoEngage.sharedInstance().appStatus(INSTALL)
+            case RSEvents.LifeCycle.applicationUpdated: MoEngage.sharedInstance().appStatus(UPDATE)
             default:
                 if let properties = message.properties, !properties.isEmpty {
                     let eventProperties: MOProperties = MOProperties()
@@ -106,19 +106,6 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
         MoEngage.sharedInstance().syncNow()
         client?.log(message: "MoEngage Flush API: 'MoEngage.sharedInstance().syncNow()' is called.", logLevel: .debug)
     }
-    
-    // MARK: - User Notification Center delegate methods
-
-    @available(iOS 10.0, *)
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.sound, .alert])
-    }
-
-    @available(iOS 10.0, *)
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        MoEngage.sharedInstance().userNotificationCenter(center, didReceive: response)
-        completionHandler()
-    }
 }
 
 #if os(iOS) || targetEnvironment(macCatalyst)
@@ -148,20 +135,30 @@ extension RSMoEngageDestination: RSPushNotifications {
 // MARK: - Support methods
 
 extension RSMoEngageDestination {
+    // MARK: - User Notification Center delegate methods
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.sound, .alert])
+    }
+
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        MoEngage.sharedInstance().userNotificationCenter(center, didReceive: response)
+        completionHandler()
+    }
     
     func handle(traits: [String: Any]) {
         for (key, value) in traits {
             if value is String || value is NSNumber || value is Date {
                 switch key {
-                case "email": MoEngage.sharedInstance().setUserEmailID(value as? String)
-                case "name": MoEngage.sharedInstance().setUserName(value as? String)
-                case "phone": MoEngage.sharedInstance().setUserMobileNo(value)
-                case "firstName": MoEngage.sharedInstance().setUserAttribute(value, forKey: USER_ATTRIBUTE_USER_FIRST_NAME)
-                case "lastName": MoEngage.sharedInstance().setUserLastName(value as? String)
-                case "gender": MoEngage.sharedInstance().setUserAttribute(value, forKey: USER_ATTRIBUTE_USER_GENDER)
-                case "birthday": identifyDateUserAttribute(value: value, attr_name: USER_ATTRIBUTE_USER_BDAY)
-                case "address": MoEngage.sharedInstance().setUserAttribute(value, forKey: "address")
-                case "age": MoEngage.sharedInstance().setUserAttribute(value, forKey: "age")
+                case RSKeys.Identify.Traits.email: MoEngage.sharedInstance().setUserEmailID(value as? String)
+                case RSKeys.Identify.Traits.name: MoEngage.sharedInstance().setUserName(value as? String)
+                case RSKeys.Identify.Traits.phone: MoEngage.sharedInstance().setUserMobileNo(value)
+                case RSKeys.Identify.Traits.firstName: MoEngage.sharedInstance().setUserAttribute(value, forKey: USER_ATTRIBUTE_USER_FIRST_NAME)
+                case RSKeys.Identify.Traits.lastName: MoEngage.sharedInstance().setUserLastName(value as? String)
+                case RSKeys.Identify.Traits.gender: MoEngage.sharedInstance().setUserAttribute(value, forKey: USER_ATTRIBUTE_USER_GENDER)
+                case RSKeys.Identify.Traits.birthday: identifyDateUserAttribute(value: value, attr_name: USER_ATTRIBUTE_USER_BDAY)
+                case RSKeys.Identify.Traits.address: MoEngage.sharedInstance().setUserAttribute(value, forKey: RSKeys.Identify.Traits.address)
+                case RSKeys.Identify.Traits.age: MoEngage.sharedInstance().setUserAttribute(value, forKey: RSKeys.Identify.Traits.age)
                 default: identifyDateUserAttribute(value: value, attr_name: key)
                 }
             }
@@ -197,7 +194,7 @@ extension RSMoEngageDestination {
     }
 }
 
-struct RSKeys: Codable {
+struct RSMoEngageConfig: Codable {
     private let _apiId: String?
     var apiId: String {
         return _apiId ?? ""
