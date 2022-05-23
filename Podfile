@@ -4,7 +4,7 @@ inhibit_all_warnings!
 platform :ios, '13.0'
 
 def shared_pods
-    pod 'RudderStack', :path => '~/Documents/Rudder/rudder-sdk-swift/'
+    pod 'Rudder', '~> 2.0.0'
 end
 
 target 'RudderMoEngage' do

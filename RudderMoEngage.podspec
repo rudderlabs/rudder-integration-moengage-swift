@@ -20,6 +20,6 @@ Pod::Spec.new do |s|
     s.module_name = 'RudderMoEngage'
     s.swift_version = '5.3'
 
-    s.dependency 'RudderStack'
+    s.dependency 'Rudder', '~> 2.0.0'
     s.dependency 'MoEngage-iOS-SDK', '~> 6.1.0'
 end
