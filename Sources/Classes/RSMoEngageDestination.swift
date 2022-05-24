@@ -66,7 +66,7 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
                         switch value {
                         case let val as String:
                             // Try to convert the value from String to Date
-                            if let date: Date = dateFrom(isoDateStr: val) {
+                            if let date: Date = dateFrom(isoDateString: val) {
                                 eventProperties.addDateAttribute(date, withName: key)
                                 break
                             }
@@ -166,7 +166,7 @@ extension RSMoEngageDestination {
         if let key = key {
             // Verify if the value is of type Date or not
             // Track UserAttribute using Epoch value. Refer here: https://developers.moengage.com/hc/en-us/articles/4403905883796-Tracking-User-Attributes
-            if let value = value as? String, let convertedDate = dateFrom(isoDateStr: value) {
+            if let value = value as? String, let convertedDate = dateFrom(isoDateString: value) {
                 MoEngage.sharedInstance().setUserAttributeTimestamp(convertedDate.timeIntervalSince1970, forKey: key)
             } else if let value = value as? Date {
                 MoEngage.sharedInstance().setUserAttributeDate(value, forKey: key)
