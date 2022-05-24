@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
     s.homepage         = 'https://github.com/rudderlabs/rudder-moengage-ios'
     s.license          = { :type => "Apache", :file => "LICENSE" }
     s.author           = { 'RudderStack' => 'arnab@rudderlabs.com' }
-    s.source           = { :git => 'https://github.com/rudderlabs/rudder-moengage-ios.git' , :tag => 'v#{s.version}'}
+    s.source           = { :git => 'https://github.com/rudderlabs/rudder-moengage-ios.git' , :tag => "v#{s.version}"}
     
     s.ios.deployment_target = '13.0'
 

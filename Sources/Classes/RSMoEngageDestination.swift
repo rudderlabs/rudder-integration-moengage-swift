@@ -79,10 +79,10 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
                         }
                     }
                     MoEngage.sharedInstance().trackEvent(message.event, with: eventProperties)
-                    break
-                }
+                } else {
                 // If message.properties is empty
-                MoEngage.sharedInstance().trackEvent(message.event, with: nil)
+                    MoEngage.sharedInstance().trackEvent(message.event, with: nil)
+                }
             }
         }
         return message
@@ -153,39 +153,36 @@ extension RSMoEngageDestination {
                 case RSKeys.Identify.Traits.firstName: MoEngage.sharedInstance().setUserAttribute(value, forKey: USER_ATTRIBUTE_USER_FIRST_NAME)
                 case RSKeys.Identify.Traits.lastName: MoEngage.sharedInstance().setUserLastName(value as? String)
                 case RSKeys.Identify.Traits.gender: MoEngage.sharedInstance().setUserAttribute(value, forKey: USER_ATTRIBUTE_USER_GENDER)
-                case RSKeys.Identify.Traits.birthday: identifyDateUserAttribute(value: value, attr_name: USER_ATTRIBUTE_USER_BDAY)
+                case RSKeys.Identify.Traits.birthday: identifyDateUserAttribute(value: value, key: USER_ATTRIBUTE_USER_BDAY)
                 case RSKeys.Identify.Traits.address: MoEngage.sharedInstance().setUserAttribute(value, forKey: RSKeys.Identify.Traits.address)
                 case RSKeys.Identify.Traits.age: MoEngage.sharedInstance().setUserAttribute(value, forKey: RSKeys.Identify.Traits.age)
-                default: identifyDateUserAttribute(value: value, attr_name: key)
+                default: identifyDateUserAttribute(value: value, key: key)
                 }
             }
         }
     }
     
-    func identifyDateUserAttribute(value: Any?, attr_name: String?) {
-        if let attr_name = attr_name {
-            if let value = value as? String {
-                // Verify if the value is of type Date or not
-                if let convertedDate = dateFrom(isoDateStr: value) {
-                    // Track UserAttribute using Epoch value. Refer here: https://developers.moengage.com/hc/en-us/articles/4403905883796-Tracking-User-Attributes
-                    MoEngage.sharedInstance().setUserAttributeTimestamp(convertedDate.timeIntervalSince1970, forKey: attr_name)
-                    return
-                }
+    func identifyDateUserAttribute(value: Any?, key: String?) {
+        if let key = key {
+            // Verify if the value is of type Date or not
+            // Track UserAttribute using Epoch value. Refer here: https://developers.moengage.com/hc/en-us/articles/4403905883796-Tracking-User-Attributes
+            if let value = value as? String, let convertedDate = dateFrom(isoDateStr: value) {
+                MoEngage.sharedInstance().setUserAttributeTimestamp(convertedDate.timeIntervalSince1970, forKey: key)
+            } else if let value = value as? Date {
+                MoEngage.sharedInstance().setUserAttributeDate(value, forKey: key)
+            } else {
+                MoEngage.sharedInstance().setUserAttribute(value, forKey: key)
             }
-            if let value = value as? Date {
-                MoEngage.sharedInstance().setUserAttributeDate(value, forKey: attr_name)
-            }
-            MoEngage.sharedInstance().setUserAttribute(value, forKey: attr_name)
         }
     }
     
-    func dateFrom(isoDateStr: Any?) -> Date? {
-        if let date: String = isoDateStr as? String, !date.isEmpty {
+    func dateFrom(isoDateString: String?) -> Date? {
+        if let date = isoDateString, !date.isEmpty {
             let dateFormatter = DateFormatter()
             dateFormatter.locale = Locale(identifier: "en_US_POSIX")
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
             dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-            return dateFormatter.date(from: date) ?? nil
+            return dateFormatter.date(from: date)
         }
         return nil
     }

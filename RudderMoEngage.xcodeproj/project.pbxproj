@@ -8,17 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		4CE6227B14C9DAE9C0461984 /* Pods_RudderMoEngage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14AB33342B9EAE98CA75171B /* Pods_RudderMoEngage.framework */; };
-		8C89A52028104E200098F12F /* RudderMoEngage.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C89A51F28104E200098F12F /* RudderMoEngage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8C89A52228104E5F0098F12F /* RSMoEngageDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C89A52128104E5F0098F12F /* RSMoEngageDestination.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		14AB33342B9EAE98CA75171B /* Pods_RudderMoEngage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RudderMoEngage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8C89A51F28104E200098F12F /* RudderMoEngage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RudderMoEngage.h; path = Sources/SDKInfo/RudderMoEngage.h; sourceTree = "<group>"; };
-		8C89A52128104E5F0098F12F /* RSMoEngageDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RSMoEngageDestination.swift; path = Sources/Classes/RSMoEngageDestination.swift; sourceTree = "<group>"; };
 		8C89A5252810513A0098F12F /* RudderMoEngage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RudderMoEngage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C89A52728105D380098F12F /* RudderMoEngage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RudderMoEngage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8CC9139F280FF5A000761E68 /* RudderMoEngage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RudderMoEngage.h; path = Sources/SDKInfo/RudderMoEngage.h; sourceTree = "<group>"; };
 		8CE2AB83280FDDCB00321A8D /* RudderMoEngage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RudderMoEngage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C029646CCBE89340081A1D82 /* Pods-RudderMoEngage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderMoEngage.debug.xcconfig"; path = "Target Support Files/Pods-RudderMoEngage/Pods-RudderMoEngage.debug.xcconfig"; sourceTree = "<group>"; };
 		ED2A28EB2770560400646788 /* RudderMoEngage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RudderMoEngage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -27,6 +22,7 @@
 		ED2A28FB2770591E00646788 /* RudderMoEngage.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = RudderMoEngage.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		ED2A28FC2770591E00646788 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		ED2A28FD2770591E00646788 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		EDAA6F0A283CBB62008ABB0C /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		EDF68FE627D1FD620005AAC6 /* RSMoEngageDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSMoEngageDestination.swift; sourceTree = "<group>"; };
 		EED58A1186FFD7EFAAC19CC8 /* Pods-RudderMoEngage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderMoEngage.release.xcconfig"; path = "Target Support Files/Pods-RudderMoEngage/Pods-RudderMoEngage.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,9 +62,7 @@
 		ED2A28E12770560400646788 = {
 			isa = PBXGroup;
 			children = (
-				8C89A52128104E5F0098F12F /* RSMoEngageDestination.swift */,
-				8CC9139F280FF5A000761E68 /* RudderMoEngage.h */,
-				8C89A51F28104E200098F12F /* RudderMoEngage.h */,
+				EDAA6F0A283CBB62008ABB0C /* CHANGELOG.md */,
 				ED2A28FA2770591E00646788 /* LICENSE */,
 				ED2A28FD2770591E00646788 /* Podfile */,
 				ED2A28FC2770591E00646788 /* README.md */,
@@ -120,7 +114,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C89A52028104E200098F12F /* RudderMoEngage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,7 +231,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C89A52228104E5F0098F12F /* RSMoEngageDestination.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
