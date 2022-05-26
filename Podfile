@@ -1,3 +1,4 @@
+source 'https://github.com/CocoaPods/Specs.git'
 workspace 'RudderMoEngage.xcworkspace'
 use_frameworks!
 inhibit_all_warnings!

@@ -111,20 +111,20 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
 // MARK: - Push Notification methods
 
 extension RSMoEngageDestination: RSPushNotifications {
-    func registeredForRemoteNotifications(deviceToken: Data) {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         MoEngage.sharedInstance().setPushToken(deviceToken)
     }
     
-    func failedToRegisterForRemoteNotification(error: Error?) {
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         MoEngage.sharedInstance().didFailToRegisterForPush()
     }
     
-    func receivedRemoteNotification(userInfo: [AnyHashable: Any]) {
-        MoEngage.sharedInstance().didReceieveNotificationinApplication(UIApplication.shared, withInfo: userInfo)
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        MoEngage.sharedInstance().didReceieveNotificationinApplication(application, withInfo: userInfo)
     }
     
-    func handleAction(withIdentifier identifier: String, forRemoteNotification userInfo: [AnyHashable: Any]) {
-        MoEngage.sharedInstance().handleAction(withIdentifier: identifier, forRemoteNotification: userInfo)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        MoEngage.sharedInstance().userNotificationCenter(center, didReceive: response)
     }
 }
 
@@ -133,16 +133,6 @@ extension RSMoEngageDestination: RSPushNotifications {
 // MARK: - Support methods
 
 extension RSMoEngageDestination {
-    // MARK: - User Notification Center delegate methods
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.sound, .alert])
-    }
-
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        MoEngage.sharedInstance().userNotificationCenter(center, didReceive: response)
-        completionHandler()
-    }
-    
     func handle(traits: [String: Any]) {
         for (key, value) in traits {
             if value is String || value is NSNumber || value is Date {
