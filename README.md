@@ -61,7 +61,42 @@ RSClient.sharedInstance().configure(with: config)
 RSClient.sharedInstance().addDestination(RudderMoEngageDestination())
 ```
 
-## Step 3: Send events
+## Step 3: Making push notifications event
+
+Place the following under `didFinishLaunchingWithOptions` method:
+
+```swift
+if #available(iOS 10.0, *) {
+    UNUserNotificationCenter.current().delegate = self
+}
+```
+
+In you `plist` file add `MoEngageAppDelegateProxyEnabled` key and set it `false` to disable swizzling.
+
+Generate `.pem` file and upload it to the MoEngage and then implement following method:
+```swift
+func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+  let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
+  let token = tokenParts.joined()
+  print("Device Token: \(token)")
+    RSClient.sharedInstance().application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+}
+
+func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+  print("Failed to register: \(error)")
+    RSClient.sharedInstance().application(application, didFailToRegisterForRemoteNotificationsWithError: error)
+}
+
+func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    RSClient.sharedInstance().userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
+}
+
+func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    RSClient.sharedInstance().application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
+}
+```
+
+## Step 4: Send events
 
 Follow the steps listed in the [RudderStack Swift SDK](https://github.com/rudderlabs/rudder-sdk-ios/tree/master-v2#sending-events) repo to start sending events to MoEngage.
 
