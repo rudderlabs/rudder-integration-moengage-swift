@@ -198,6 +198,7 @@ struct RSMoEngageConfig: Codable {
 @objc
 public class RudderMoEngageDestination: RudderDestination {
 
+    @objc
     public override init() {
         super.init()
         plugin = RSMoEngageDestination()

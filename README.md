@@ -70,6 +70,12 @@ Place the following code in your ```AppDelegate``` under the ```didFinishLaunchi
 
 ### Objective C
 
+```objective-c
+if (@available(iOS 10.0, *)) {
+    UNUserNotificationCenter.currentNotificationCenter.delegate = self;
+}
+```
+
 ### Swift
 
 ```swift
@@ -83,6 +89,24 @@ In you `plist` file add `MoEngageAppDelegateProxyEnabled` key and set it `false`
 Generate `.pem` file and upload it to the MoEngage and then implement following method:
 
 ### Objective C
+```objective-c
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [RSClient.sharedInstance application: application didRegisterForRemoteNotificationsWithDeviceToken: deviceToken];
+
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    [RSClient.sharedInstance application: application didFailToRegisterForRemoteNotificationsWithError: error];
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)(void))completionHandler {
+    [RSClient.sharedInstance userNotificationCenter: center didReceive: response withCompletionHandler: completionHandler];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    [RSClient.sharedInstance application: application didReceiveRemoteNotification: userInfo fetchCompletionHandler: completionHandler];
+}
+```
 
 ### Swift
 

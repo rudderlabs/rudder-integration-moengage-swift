@@ -9,8 +9,9 @@
 
 @import Rudder;
 @import RudderMoEngage;
+#import <UserNotifications/UserNotifications.h>
 
-@interface AppDelegate ()
+@interface AppDelegate () <UNUserNotificationCenterDelegate>
 
 @end
 
@@ -30,11 +31,32 @@
     
     [client addDestination:[[RudderMoEngageDestination alloc] init]];
     [client track:@"Track 1"];
+    
+    if (@available(iOS 10.0, *)) {
+        UNUserNotificationCenter.currentNotificationCenter.delegate = self;
+    }
     return YES;
 }
 
 
 #pragma mark - UISceneSession lifecycle
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [RSClient.sharedInstance application: application didRegisterForRemoteNotificationsWithDeviceToken: deviceToken];
+
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    [RSClient.sharedInstance application: application didFailToRegisterForRemoteNotificationsWithError: error];
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)(void))completionHandler {
+    [RSClient.sharedInstance userNotificationCenter: center didReceive: response withCompletionHandler: completionHandler];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    [RSClient.sharedInstance application: application didReceiveRemoteNotification: userInfo fetchCompletionHandler: completionHandler];
+}
 
 
 - (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
