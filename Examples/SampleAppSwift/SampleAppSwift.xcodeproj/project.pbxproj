@@ -13,6 +13,7 @@
 		06EABC8D24665E470043D720 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06EABC8B24665E470043D720 /* Main.storyboard */; };
 		06EABC8F24665E480043D720 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06EABC8E24665E480043D720 /* Assets.xcassets */; };
 		06EABC9224665E480043D720 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06EABC9024665E480043D720 /* LaunchScreen.storyboard */; };
+		8CB7FDA22847C1CE008018AF /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CB7FDA12847C1CE008018AF /* UserNotifications.framework */; };
 		A6E1458EB27CC7C899E3B625 /* Pods_SampleAppSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28C3D390F544487B3D0D25B /* Pods_SampleAppSwift.framework */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,8 @@
 		06EABC9324665E480043D720 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A80F07C523063EC35856541 /* Pods-RudderSampleAppSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderSampleAppSwift.debug.xcconfig"; path = "Target Support Files/Pods-RudderSampleAppSwift/Pods-RudderSampleAppSwift.debug.xcconfig"; sourceTree = "<group>"; };
 		236B7D3A09137DB00470A261 /* Pods-SampleAppSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleAppSwift.debug.xcconfig"; path = "Target Support Files/Pods-SampleAppSwift/Pods-SampleAppSwift.debug.xcconfig"; sourceTree = "<group>"; };
+		8CB7FDA02847C198008018AF /* SampleAppSwift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SampleAppSwift.entitlements; sourceTree = "<group>"; };
+		8CB7FDA12847C1CE008018AF /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		B28C3D390F544487B3D0D25B /* Pods_SampleAppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SampleAppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D150D4E65D8E33B6545DAAB5 /* Pods-RudderSampleAppSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RudderSampleAppSwift.release.xcconfig"; path = "Target Support Files/Pods-RudderSampleAppSwift/Pods-RudderSampleAppSwift.release.xcconfig"; sourceTree = "<group>"; };
 		F8AFA8807BBE9556C48E8F8C /* Pods-SampleAppSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleAppSwift.release.xcconfig"; path = "Target Support Files/Pods-SampleAppSwift/Pods-SampleAppSwift.release.xcconfig"; sourceTree = "<group>"; };
@@ -37,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CB7FDA22847C1CE008018AF /* UserNotifications.framework in Frameworks */,
 				A6E1458EB27CC7C899E3B625 /* Pods_SampleAppSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -65,6 +69,7 @@
 		06EABC8424665E470043D720 /* SampleAppSwift */ = {
 			isa = PBXGroup;
 			children = (
+				8CB7FDA02847C198008018AF /* SampleAppSwift.entitlements */,
 				06EABC8524665E470043D720 /* AppDelegate.swift */,
 				06EABC8724665E470043D720 /* SceneDelegate.swift */,
 				06EABC8924665E470043D720 /* ViewController.swift */,
@@ -91,6 +96,7 @@
 		5BCFA8EE73AF6931DBCB65B4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8CB7FDA12847C1CE008018AF /* UserNotifications.framework */,
 				B28C3D390F544487B3D0D25B /* Pods_SampleAppSwift.framework */,
 			);
 			name = Frameworks;
@@ -360,6 +366,7 @@
 			baseConfigurationReference = 236B7D3A09137DB00470A261 /* Pods-SampleAppSwift.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SampleAppSwift/SampleAppSwift.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = GTGKNDBD23;
 				INFOPLIST_FILE = "$(SRCROOT)/SampleAppSwift/Info.plist";
@@ -369,7 +376,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rudderstack.integration.test.ios.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rudderstack.RudderMoEngage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -381,6 +388,7 @@
 			baseConfigurationReference = F8AFA8807BBE9556C48E8F8C /* Pods-SampleAppSwift.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SampleAppSwift/SampleAppSwift.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = GTGKNDBD23;
 				INFOPLIST_FILE = "$(SRCROOT)/SampleAppSwift/Info.plist";
@@ -390,7 +398,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rudderstack.integration.test.ios.swift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rudderstack.RudderMoEngage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

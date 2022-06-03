@@ -9,9 +9,10 @@
 import UIKit
 import Rudder
 import RudderMoEngage
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var client: RSClient?
 
@@ -20,8 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let config: RSConfig = RSConfig(writeKey: "27COeQCO3BS2WMw8CJUqYRC5hL7")
             .dataPlaneURL("https://rudderstacbumvdrexzj.dataplane.rudderstack.com")
-            .loglevel(.none)
-            .trackLifecycleEvents(true)
+            .loglevel(.debug)
+            .trackLifecycleEvents(false)
             .recordScreenViews(false)
 
         client = RSClient.sharedInstance()
@@ -31,9 +32,57 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         sendEvents()
 
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().delegate = self
+        }
+        registerForPushNotifications()
         return true
     }
 
+    func registerForPushNotifications() {
+        UNUserNotificationCenter.current()
+          .requestAuthorization(
+            options: [.alert, .sound, .badge]) { [weak self] granted, _ in
+            print("Permission granted: \(granted)")
+            guard granted else { return }
+            self?.getNotificationSettings()
+          }
+
+    }
+    
+    func getNotificationSettings() {
+      UNUserNotificationCenter.current().getNotificationSettings { settings in
+        print("Notification settings: \(settings)")
+          guard settings.authorizationStatus == .authorized else { return }
+          DispatchQueue.main.async {
+            UIApplication.shared.registerForRemoteNotifications()
+          }
+
+      }
+    }
+    
+    // MARK: Push Notification call
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+      let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
+      let token = tokenParts.joined()
+      print("Device Token: \(token)")
+        RSClient.sharedInstance().application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+      print("Failed to register: \(error)")
+        RSClient.sharedInstance().application(application, didFailToRegisterForRemoteNotificationsWithError: error)
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        RSClient.sharedInstance().userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
+    }
+
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        RSClient.sharedInstance().application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
+    }
+    
+    // MARK: Track User Events
     func sendEvents() {
         sendIdentifyEvents()
         sendTrackEvents()
