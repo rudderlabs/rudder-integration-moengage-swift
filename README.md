@@ -16,7 +16,7 @@
   <b>
     <a href="https://rudderstack.com">Website</a>
     ·
-    <a href="https://rudderstack.com/docs/stream-sources/rudderstack-sdk-integration-guides/rudderstack-swift-sdk/">Documentation</a>
+    <a href="https://www.rudderstack.com/docs/destinations/marketing/moengage/">Documentation</a>
     ·
     <a href="https://rudderstack.com/join-rudderstack-slack-community">Community Slack</a>
   </b>
@@ -25,7 +25,7 @@
 ---
 # Integrating RudderStack iOS SDK with MoEngage
 
-This repository contains the resources and assets required to integrate the [RudderStack iOS SDK](https://www.rudderstack.com/docs/stream-sources/rudderstack-sdk-integration-guides/rudderstack-ios-sdk/) with [MoEngage](https://www.moengage.com/).
+This repository contains the resources and assets required to integrate the [RudderStack iOS SDK](https://www.rudderstack.com/docs/stream-sources/rudderstack-sdk-integration-guides/rudderstack-ios-sdk/ios-v2/) with [MoEngage](https://www.moengage.com/).
 
 | For more information on configuring MoEngage as a destination in RudderStack and the supported events and their mappings, refer to the [MoEngage documentation](https://www.rudderstack.com/docs/destinations/marketing/moengage/).   |
 | :--|
@@ -37,12 +37,12 @@ This repository contains the resources and assets required to integrate the [Rud
 2. `RudderMoEngage` is available through [CocoaPods](https://cocoapods.org). To install it, add the following line to your Podfile and followed by `pod install`, as shown:
 
 ```ruby
-pod 'RudderMoEngage'
+pod 'RudderMoEngage', '~> 1.0.0'
 ```
 
 ## Step 2: Initialize the RudderStack client (`RSClient`)
 
-Place the following in your ```AppDelegate``` under the ```didFinishLaunchingWithOptions``` method:
+Place the following code in your ```AppDelegate``` under the ```didFinishLaunchingWithOptions``` method:
 
 ### Objective C
 
@@ -60,10 +60,17 @@ let config: RSConfig = RSConfig(writeKey: WRITE_KEY)
 RSClient.sharedInstance().configure(with: config)
 RSClient.sharedInstance().addDestination(RudderMoEngageDestination())
 ```
+## Step 3: Send events
 
-## Step 3: Making push notifications event
+Follow the steps listed in the [RudderStack iOS SDK](https://github.com/rudderlabs/rudder-sdk-ios/tree/master-v2#sending-events) repo to start sending events to MoEngage.
 
-Place the following under `didFinishLaunchingWithOptions` method:
+## Making push notifications event
+
+Place the following code in your ```AppDelegate``` under the ```didFinishLaunchingWithOptions``` method:
+
+### Objective C
+
+### Swift
 
 ```swift
 if #available(iOS 10.0, *) {
@@ -74,16 +81,17 @@ if #available(iOS 10.0, *) {
 In you `plist` file add `MoEngageAppDelegateProxyEnabled` key and set it `false` to disable swizzling.
 
 Generate `.pem` file and upload it to the MoEngage and then implement following method:
+
+### Objective C
+
+### Swift
+
 ```swift
 func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-  let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
-  let token = tokenParts.joined()
-  print("Device Token: \(token)")
     RSClient.sharedInstance().application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
 }
 
 func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-  print("Failed to register: \(error)")
     RSClient.sharedInstance().application(application, didFailToRegisterForRemoteNotificationsWithError: error)
 }
 
@@ -96,10 +104,6 @@ func application(_ application: UIApplication, didReceiveRemoteNotification user
 }
 ```
 
-## Step 4: Send events
-
-Follow the steps listed in the [RudderStack Swift SDK](https://github.com/rudderlabs/rudder-sdk-ios/tree/master-v2#sending-events) repo to start sending events to MoEngage.
-
 ## About RudderStack
 
 RudderStack is the **customer data platform** for developers. With RudderStack, you can build and deploy efficient pipelines that collect customer data from every app, website, and SaaS platform, then activate your data in your warehouse, business, and marketing tools.
@@ -109,4 +113,4 @@ RudderStack is the **customer data platform** for developers. With RudderStack, 
 
 ## Contact us
 
-For queries on configuring or using this integration, [contact us](mailto:%20docs@rudderstack.com) or start a conversation in our [Slack](https://rudderstack.com/join-rudderstack-slack-community) community.
+For queries on configuring or using this integration, start a conversation in our [Slack](https://rudderstack.com/join-rudderstack-slack-community) community.
