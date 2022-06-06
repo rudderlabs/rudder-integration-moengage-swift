@@ -1,0 +1,29 @@
+PODS:
+  - MoEngage-iOS-SDK (6.1.1)
+  - Rudder (2.0.0)
+  - RudderMoEngage (1.0.0):
+    - MoEngage-iOS-SDK (~> 6.1.0)
+    - Rudder (~> 2.0.0)
+
+DEPENDENCIES:
+  - MoEngage-iOS-SDK (~> 6.1.0)
+  - Rudder (~> 2.0.0)
+  - RudderMoEngage (from `.`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - MoEngage-iOS-SDK
+    - Rudder
+
+EXTERNAL SOURCES:
+  RudderMoEngage:
+    :path: "."
+
+SPEC CHECKSUMS:
+  MoEngage-iOS-SDK: 47c685f40824ceae1fe0c252d1dc0e85d0f10247
+  Rudder: 3191eb7c0bd0158fc983e0b7e171223f701ebc7c
+  RudderMoEngage: b1e3e696a1b6b9c265a17593201f67160130ef06
+
+PODFILE CHECKSUM: 082aa44bee6476be234bffaafd72193e6499ce5b
+
+COCOAPODS: 1.11.3
