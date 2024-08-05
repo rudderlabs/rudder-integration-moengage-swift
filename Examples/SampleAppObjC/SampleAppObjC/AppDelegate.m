@@ -20,9 +20,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    RSConfig *config = [[RSConfig alloc] initWithWriteKey:@"27COeQCO3BS2WMw8CJUqYRC5hL7"];
-    [config dataPlaneURL:@"https://rudderstacz.dataplane.rudderstack.com"];
-    [config loglevel:RSLogLevelDebug];
+    RSConfig *config = [[RSConfig alloc] initWithWriteKey:@"<WRITE_KEY>"];
+    [config dataPlaneURL:@"<DATA_PLANE_URL>"];
+    [config loglevel:RSLogLevelVerbose];
     [config trackLifecycleEvents:YES];
     [config recordScreenViews:YES];
     

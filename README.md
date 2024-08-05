@@ -37,7 +37,7 @@ This repository contains the resources and assets required to integrate the [Rud
 2. `RudderMoEngage` is available through [CocoaPods](https://cocoapods.org). To install it, add the following line to your Podfile and followed by `pod install`, as shown:
 
 ```ruby
-pod 'RudderMoEngage', '~> 1.0.0'
+pod 'RudderMoEngage', '~> 1.1.0'
 ```
 
 ## Step 2: Initialize the RudderStack client (`RSClient`)

@@ -6,62 +6,83 @@
 //
 
 import Foundation
+
 import Rudder
-import MoEngage
+import MoEngageSDK
 
 class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCenterDelegate {
     let type = PluginType.destination
     let key = "MoEngage"
     var client: RSClient?
     var controller = RSController()
+    var moEngageDataCenter: MoEngageDataCenter?
 
-    func update(serverConfig: RSServerConfig, type: UpdateType) {
+    func update(serverConfig: RSServerConfig, type: UpdateType)  {
         guard type == .initial else { return }
         guard let moEngageConfig: RSMoEngageConfig = serverConfig.getConfig(forPlugin: self) else {
             client?.log(message: "Failed to Initialize MoEngage Factory", logLevel: .warning)
             return
         }
-        // Check if debug mode is on or off
-#if DEBUG
-        MoEngage.sharedInstance().initializeDev(withAppID: moEngageConfig.apiId)
-#else
-        MoEngage.sharedInstance().initializeProd(withAppID: moEngageConfig.apiId)
-#endif
+        
+        // Redirect data according to region
         if moEngageConfig.region == "EU" {
-            MoEngage.redirectData(to: MOE_REGION_EU)
+            moEngageDataCenter = .data_center_02
+        } else if moEngageConfig.region == "US" {
+            moEngageDataCenter = .data_center_01
+        } else if moEngageConfig.region == "IND" {
+            moEngageDataCenter = .data_center_03
+        }
+        else{
+            client?.log(message:"MoEngage SDK initialization terminated due to an invalid region.", logLevel: .warning)
         }
         
+        let sdkConfig = MoEngageSDKConfig(appId: moEngageConfig.apiId, dataCenter: moEngageDataCenter!)
+        // Check if debug mode is on or off
+#if DEBUG
+      
+        MoEngage.sharedInstance.initializeDefaultTestInstance(sdkConfig)
+#else
+        
+        MoEngage.sharedInstance.initializeDefaultLiveInstance(sdkConfig)
+#endif
+       
         if UNUserNotificationCenter.current().delegate == nil {
            UNUserNotificationCenter.current().delegate = self
         }
         
         client?.log(message: "Initializing MoEngage SDK", logLevel: .debug)
     }
-
+    
     func identify(message: IdentifyMessage) -> IdentifyMessage? {
         reset()
         if let anonymousId = message.anonymousId {
-            MoEngage.sharedInstance().setUserAttribute(anonymousId, forKey: "anonymousId")
+          
+            MoEngageSDKAnalytics.sharedInstance.setUserAttribute(anonymousId, withAttributeName: "anonymousId")
         }
+        
         if let userId = message.userId {
-            MoEngage.sharedInstance().setUserAttribute(userId, forKey: USER_ATTRIBUTE_UNIQUE_ID)
-            MoEngage.sharedInstance().setUserUniqueID(userId)
+            MoEngageSDKAnalytics.sharedInstance.setUserAttribute(userId, withAttributeName: "userId")
+            MoEngageSDKAnalytics.sharedInstance.setUniqueID(userId)
         }
         
         if let traits = message.traits, !traits.isEmpty {
             handle(traits: traits)
+            
         }
         return message
     }
+    
+    
+
 
     func track(message: TrackMessage) -> TrackMessage? {
         if !message.event.isEmpty {
             switch message.event {
-            case RSEvents.LifeCycle.applicationInstalled: MoEngage.sharedInstance().appStatus(INSTALL)
-            case RSEvents.LifeCycle.applicationUpdated: MoEngage.sharedInstance().appStatus(UPDATE)
+            case RSEvents.LifeCycle.applicationInstalled: MoEngageAppStatus(rawValue: 0)
+            case RSEvents.LifeCycle.applicationUpdated: MoEngageAppStatus.update
             default:
                 if let properties = message.properties, !properties.isEmpty {
-                    let eventProperties: MOProperties = MOProperties()
+                    let eventProperties: MoEngageProperties = MoEngageProperties()
                     for (key, value) in properties {
                         switch value {
                         case let val as String:
@@ -78,10 +99,15 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
                         default: break
                         }
                     }
-                    MoEngage.sharedInstance().trackEvent(message.event, with: eventProperties)
+                   
+                 
+                    MoEngageSDKAnalytics.sharedInstance.trackEvent(message.event, withProperties: eventProperties)
+                
                 } else {
                 // If message.properties is empty
-                    MoEngage.sharedInstance().trackEvent(message.event, with: nil)
+                  
+                    MoEngageSDKAnalytics.sharedInstance.trackEvent(message.event, withProperties: nil)
+                    
                 }
             }
         }
@@ -90,19 +116,21 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
     
     func alias(message: AliasMessage) -> AliasMessage? {
         if let newId = message.userId {
-            MoEngage.sharedInstance().setAlias(newId)
+           MoEngageSDKAnalytics.sharedInstance.setAlias(newId)
         }
         return message
     }
 
     func reset() {
-        MoEngage.sharedInstance().resetUser()
-        client?.log(message: "MoEngage Reset API: 'MoEngage.sharedInstance().resetUser()' is called.", logLevel: .debug)
+      
+        MoEngageSDKAnalytics.sharedInstance.resetUser()
+        client?.log(message: "MoEngage Reset API: 'MoEngage.sharedInstance().resetUser]()' is called.", logLevel: .debug)
     }
     
     func flush() {
-        MoEngage.sharedInstance().syncNow()
-        client?.log(message: "MoEngage Flush API: 'MoEngage.sharedInstance().syncNow()' is called.", logLevel: .debug)
+      
+       MoEngageSDKAnalytics.sharedInstance.flush()
+       client?.log(message: "MoEngage Flush API: 'MoEngage.sharedInstance().flush()' is called.", logLevel: .debug)
     }
 }
 
@@ -112,19 +140,19 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
 
 extension RSMoEngageDestination: RSPushNotifications {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        MoEngage.sharedInstance().setPushToken(deviceToken)
+        MoEngageSDKMessaging.sharedInstance.setPushToken(deviceToken)
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        MoEngage.sharedInstance().didFailToRegisterForPush()
+        MoEngageSDKMessaging.sharedInstance.didFailToRegisterForPush()
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        MoEngage.sharedInstance().didReceieveNotificationinApplication(application, withInfo: userInfo)
+       MoEngageSDKMessaging.sharedInstance.didReceieveNotification(inApplication: application, withInfo: userInfo)
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        MoEngage.sharedInstance().userNotificationCenter(center, didReceive: response)
+        MoEngageSDKMessaging.sharedInstance.userNotificationCenter(center, didReceive: response)
     }
 }
 
@@ -137,15 +165,15 @@ extension RSMoEngageDestination {
         for (key, value) in traits {
             if value is String || value is NSNumber || value is Date {
                 switch key {
-                case RSKeys.Identify.Traits.email: MoEngage.sharedInstance().setUserEmailID(value as? String)
-                case RSKeys.Identify.Traits.name: MoEngage.sharedInstance().setUserName(value as? String)
-                case RSKeys.Identify.Traits.phone: MoEngage.sharedInstance().setUserMobileNo(value)
-                case RSKeys.Identify.Traits.firstName: MoEngage.sharedInstance().setUserAttribute(value, forKey: USER_ATTRIBUTE_USER_FIRST_NAME)
-                case RSKeys.Identify.Traits.lastName: MoEngage.sharedInstance().setUserLastName(value as? String)
-                case RSKeys.Identify.Traits.gender: MoEngage.sharedInstance().setUserAttribute(value, forKey: USER_ATTRIBUTE_USER_GENDER)
-                case RSKeys.Identify.Traits.birthday: identifyDateUserAttribute(value: value, key: USER_ATTRIBUTE_USER_BDAY)
-                case RSKeys.Identify.Traits.address: MoEngage.sharedInstance().setUserAttribute(value, forKey: RSKeys.Identify.Traits.address)
-                case RSKeys.Identify.Traits.age: MoEngage.sharedInstance().setUserAttribute(value, forKey: RSKeys.Identify.Traits.age)
+                case RSKeys.Identify.Traits.email: MoEngageSDKAnalytics.sharedInstance.setEmailID((value as? String)!)
+                case RSKeys.Identify.Traits.name: MoEngageSDKAnalytics.sharedInstance.setName((value as? String)!)
+                case RSKeys.Identify.Traits.phone: MoEngageSDKAnalytics.sharedInstance.setMobileNumber(value as! String)
+                case RSKeys.Identify.Traits.firstName: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: "USER_ATTRIBUTE_USER_FIRST_NAME") //USER_ATTRIBUTE_USER_FIRST_NAME
+                case RSKeys.Identify.Traits.lastName: MoEngageSDKAnalytics.sharedInstance.setLastName((value as? String)!)
+                case RSKeys.Identify.Traits.gender: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: "USER_ATTRIBUTE_USER_GENDER")
+                case RSKeys.Identify.Traits.birthday: identifyDateUserAttribute(value: value, key: "USER_ATTRIBUTE_USER_BDAY")
+                case RSKeys.Identify.Traits.address: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: RSKeys.Identify.Traits.address)
+                case RSKeys.Identify.Traits.age: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: RSKeys.Identify.Traits.age)
                 default: identifyDateUserAttribute(value: value, key: key)
                 }
             }
@@ -157,11 +185,11 @@ extension RSMoEngageDestination {
             // Verify if the value is of type Date or not
             // Track UserAttribute using Epoch value. Refer here: https://developers.moengage.com/hc/en-us/articles/4403905883796-Tracking-User-Attributes
             if let value = value as? String, let convertedDate = dateFrom(isoDateString: value) {
-                MoEngage.sharedInstance().setUserAttributeTimestamp(convertedDate.timeIntervalSince1970, forKey: key)
+                MoEngageSDKAnalytics.sharedInstance.setUserAttribute(convertedDate.timeIntervalSince1970, withAttributeName: key)
             } else if let value = value as? Date {
-                MoEngage.sharedInstance().setUserAttributeDate(value, forKey: key)
+                MoEngageSDKAnalytics.sharedInstance.setUserAttributeDate(value, withAttributeName: key)
             } else {
-                MoEngage.sharedInstance().setUserAttribute(value, forKey: key)
+                MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: key)
             }
         }
     }

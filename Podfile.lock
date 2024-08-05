@@ -1,18 +1,49 @@
 PODS:
-  - MoEngage-iOS-SDK (6.1.1)
-  - Rudder (2.0.0)
+  - MoEngage-iOS-SDK (9.18.1):
+    - MoEngage-iOS-SDK/Core (= 9.18.1)
+  - MoEngage-iOS-SDK/Core (9.18.1):
+    - MoEngageAnalytics (= 4.18.1)
+    - MoEngageCore (= 9.18.1)
+    - MoEngageMessaging (= 4.18.1)
+    - MoEngageObjCUtils (= 3.18.1)
+    - MoEngageSDK (= 9.18.1)
+    - MoEngageSecurity (= 1.10.1)
+  - MoEngageAnalytics (4.18.1):
+    - MoEngageCore
+    - MoEngageObjCUtils
+  - MoEngageCore (9.18.1):
+    - MoEngageSecurity
+  - MoEngageMessaging (4.18.1):
+    - MoEngageAnalytics
+    - MoEngageCore
+    - MoEngageObjCUtils
+  - MoEngageObjCUtils (3.18.1):
+    - MoEngageCore
+  - MoEngageSDK (9.18.1):
+    - MoEngageAnalytics
+    - MoEngageCore
+    - MoEngageMessaging
+    - MoEngageObjCUtils
+  - MoEngageSecurity (1.10.1)
+  - Rudder (2.0.1)
   - RudderMoEngage (1.0.0):
-    - MoEngage-iOS-SDK (~> 6.1.0)
+    - MoEngage-iOS-SDK (~> 9.18.0)
     - Rudder (~> 2.0.0)
 
 DEPENDENCIES:
-  - MoEngage-iOS-SDK (~> 6.1.0)
+  - MoEngage-iOS-SDK (~> 9.18.0)
   - Rudder (~> 2.0.0)
   - RudderMoEngage (from `.`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - MoEngage-iOS-SDK
+    - MoEngageAnalytics
+    - MoEngageCore
+    - MoEngageMessaging
+    - MoEngageObjCUtils
+    - MoEngageSDK
+    - MoEngageSecurity
     - Rudder
 
 EXTERNAL SOURCES:
@@ -20,10 +51,16 @@ EXTERNAL SOURCES:
     :path: "."
 
 SPEC CHECKSUMS:
-  MoEngage-iOS-SDK: 47c685f40824ceae1fe0c252d1dc0e85d0f10247
-  Rudder: 3191eb7c0bd0158fc983e0b7e171223f701ebc7c
-  RudderMoEngage: b1e3e696a1b6b9c265a17593201f67160130ef06
+  MoEngage-iOS-SDK: 4acddb45e23dc6b21712228b3507d1e0e16af6fb
+  MoEngageAnalytics: f0606511bf23f9b33dcf25bbc666f152c9c017a6
+  MoEngageCore: 5f5466497ee7c24dcf0a924aafc8585610866295
+  MoEngageMessaging: a96c34322bbf24e650ef4724a5c7cecdceee82a8
+  MoEngageObjCUtils: 4928cbcb57897419069b1486e267b757370aed0d
+  MoEngageSDK: 2996df25a3889894c91da9bf9ab68e2d16f8d49d
+  MoEngageSecurity: 2adeeb8d269f36719e040bfa65a6568a336815ec
+  Rudder: 463af33116984b97f2a19d344e9ad491f164e43e
+  RudderMoEngage: d8589fc9c57f913c20fbc1658c46662862b5d601
 
-PODFILE CHECKSUM: 082aa44bee6476be234bffaafd72193e6499ce5b
+PODFILE CHECKSUM: 8b21a3425bcab041287bcacfb9650eb4b950efda
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.15.2
