@@ -168,7 +168,7 @@ extension RSMoEngageDestination {
                 case RSKeys.Identify.Traits.email: MoEngageSDKAnalytics.sharedInstance.setEmailID((value as? String)!)
                 case RSKeys.Identify.Traits.name: MoEngageSDKAnalytics.sharedInstance.setName((value as? String)!)
                 case RSKeys.Identify.Traits.phone: MoEngageSDKAnalytics.sharedInstance.setMobileNumber(value as! String)
-                case RSKeys.Identify.Traits.firstName: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: "USER_ATTRIBUTE_USER_FIRST_NAME") //USER_ATTRIBUTE_USER_FIRST_NAME
+                case RSKeys.Identify.Traits.firstName: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: "USER_ATTRIBUTE_USER_FIRST_NAME") 
                 case RSKeys.Identify.Traits.lastName: MoEngageSDKAnalytics.sharedInstance.setLastName((value as? String)!)
                 case RSKeys.Identify.Traits.gender: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: "USER_ATTRIBUTE_USER_GENDER")
                 case RSKeys.Identify.Traits.birthday: identifyDateUserAttribute(value: value, key: "USER_ATTRIBUTE_USER_BDAY")
