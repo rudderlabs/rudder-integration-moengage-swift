@@ -78,8 +78,8 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
     func track(message: TrackMessage) -> TrackMessage? {
         if !message.event.isEmpty {
             switch message.event {
-            case RSEvents.LifeCycle.applicationInstalled: MoEngageAppStatus(rawValue: 0)
-            case RSEvents.LifeCycle.applicationUpdated: MoEngageAppStatus.update
+            case RSEvents.LifeCycle.applicationInstalled: MoEngageSDKAnalytics.sharedInstance.appStatus(.install)
+            case RSEvents.LifeCycle.applicationUpdated:  MoEngageSDKAnalytics.sharedInstance.appStatus(.update)
             default:
                 if let properties = message.properties, !properties.isEmpty {
                     let eventProperties: MoEngageProperties = MoEngageProperties()
