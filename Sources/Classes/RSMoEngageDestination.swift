@@ -61,7 +61,7 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
         }
         
         if let userId = message.userId {
-            MoEngageSDKAnalytics.sharedInstance.setUserAttribute(userId, withAttributeName: "userId")
+          
             MoEngageSDKAnalytics.sharedInstance.setUniqueID(userId)
         }
         
