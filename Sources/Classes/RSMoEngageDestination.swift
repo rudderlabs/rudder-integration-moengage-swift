@@ -10,6 +10,8 @@ import Foundation
 import Rudder
 import MoEngageSDK
 
+
+
 class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCenterDelegate {
     let type = PluginType.destination
     let key = "MoEngage"
@@ -177,13 +179,13 @@ extension RSMoEngageDestination {
                     if let phone = value as? String {
                        MoEngageSDKAnalytics.sharedInstance.setMobileNumber(phone)
                     }
-                case RSKeys.Identify.Traits.firstName: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: "USER_ATTRIBUTE_USER_FIRST_NAME")
+                case RSKeys.Identify.Traits.firstName: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: RSKeys.Identify.Traits.firstName)
                 case RSKeys.Identify.Traits.lastName:
                     if let lastName = value as? String {
                        MoEngageSDKAnalytics.sharedInstance.setLastName(lastName)
                     }
-                case RSKeys.Identify.Traits.gender: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: "USER_ATTRIBUTE_USER_GENDER")
-                case RSKeys.Identify.Traits.birthday: identifyDateUserAttribute(value: value, key: "USER_ATTRIBUTE_USER_BDAY")
+                case RSKeys.Identify.Traits.gender: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: RSKeys.Identify.Traits.gender)
+                case RSKeys.Identify.Traits.birthday: identifyDateUserAttribute(value: value, key: RSKeys.Identify.Traits.birthday)
                 case RSKeys.Identify.Traits.address: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: RSKeys.Identify.Traits.address)
                 case RSKeys.Identify.Traits.age: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: RSKeys.Identify.Traits.age)
                 default: identifyDateUserAttribute(value: value, key: key)
