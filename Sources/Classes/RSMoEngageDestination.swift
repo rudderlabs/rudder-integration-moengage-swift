@@ -165,11 +165,23 @@ extension RSMoEngageDestination {
         for (key, value) in traits {
             if value is String || value is NSNumber || value is Date {
                 switch key {
-                case RSKeys.Identify.Traits.email: MoEngageSDKAnalytics.sharedInstance.setEmailID((value as? String)!)
-                case RSKeys.Identify.Traits.name: MoEngageSDKAnalytics.sharedInstance.setName((value as? String)!)
-                case RSKeys.Identify.Traits.phone: MoEngageSDKAnalytics.sharedInstance.setMobileNumber(value as! String)
-                case RSKeys.Identify.Traits.firstName: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: "USER_ATTRIBUTE_USER_FIRST_NAME") 
-                case RSKeys.Identify.Traits.lastName: MoEngageSDKAnalytics.sharedInstance.setLastName((value as? String)!)
+                case RSKeys.Identify.Traits.email:
+                    if let email = value as? String {
+                       MoEngageSDKAnalytics.sharedInstance.setEmailID(email)
+                    }
+                case RSKeys.Identify.Traits.name:
+                    if let name = value as? String {
+                        MoEngageSDKAnalytics.sharedInstance.setName(name)
+                    }
+                case RSKeys.Identify.Traits.phone:
+                    if let phone = value as? String {
+                       MoEngageSDKAnalytics.sharedInstance.setMobileNumber(phone)
+                    }
+                case RSKeys.Identify.Traits.firstName: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: "USER_ATTRIBUTE_USER_FIRST_NAME")
+                case RSKeys.Identify.Traits.lastName:
+                    if let lastName = value as? String {
+                       MoEngageSDKAnalytics.sharedInstance.setLastName(lastName)
+                    }
                 case RSKeys.Identify.Traits.gender: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: "USER_ATTRIBUTE_USER_GENDER")
                 case RSKeys.Identify.Traits.birthday: identifyDateUserAttribute(value: value, key: "USER_ATTRIBUTE_USER_BDAY")
                 case RSKeys.Identify.Traits.address: MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: RSKeys.Identify.Traits.address)
