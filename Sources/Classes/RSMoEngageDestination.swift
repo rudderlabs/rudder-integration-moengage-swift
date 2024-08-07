@@ -197,13 +197,17 @@ extension RSMoEngageDestination {
             // Verify if the value is of type Date or not
             // Track UserAttribute using Epoch value. Refer here: https://developers.moengage.com/hc/en-us/articles/4403905883796-Tracking-User-Attributes
             if let value = value as? String, let convertedDate = dateFrom(isoDateString: value) {
-                MoEngageSDKAnalytics.sharedInstance.setUserAttribute(convertedDate.timeIntervalSince1970, withAttributeName: key)
+                MoEngageSDKAnalytics.sharedInstance.setUserAttribute(convertDateToTimestamp(date: convertedDate), withAttributeName: key)
             } else if let value = value as? Date {
                 MoEngageSDKAnalytics.sharedInstance.setUserAttributeDate(value, withAttributeName: key)
             } else {
                 MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: key)
             }
         }
+    }
+    
+    func convertDateToTimestamp(date: Date) -> TimeInterval {
+        return date.timeIntervalSince1970
     }
     
     func dateFrom(isoDateString: String?) -> Date? {
