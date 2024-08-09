@@ -197,7 +197,7 @@ extension RSMoEngageDestination {
     
     private func handleDateAndCustomUserAttribute(value: Any, key: String) {
         if let value = value as? String, let convertedDate = dateFrom(isoDateString: value) {
-            MoEngageSDKAnalytics.sharedInstance.setUserAttributeEpochTime(convertedDate.timeIntervalSince1970, withAttributeName: key)
+            MoEngageSDKAnalytics.sharedInstance.setUserAttributeEpochTime(convertDateToTimestamp(date: convertedDate), withAttributeName: key)
         } else if let value = value as? Date {
             MoEngageSDKAnalytics.sharedInstance.setUserAttributeDate(value, withAttributeName: key)
         } else {
