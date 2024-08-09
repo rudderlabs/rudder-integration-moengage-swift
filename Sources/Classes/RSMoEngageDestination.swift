@@ -54,6 +54,7 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
         }
         
         client?.log(message: "Initializing MoEngage SDK", logLevel: .debug)
+        MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: .debug)
     }
     
     func identify(message: IdentifyMessage) -> IdentifyMessage? {
