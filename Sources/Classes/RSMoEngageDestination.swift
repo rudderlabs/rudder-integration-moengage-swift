@@ -169,7 +169,7 @@ extension RSMoEngageDestination {
         for (key, value) in traits {
             // Non-Standard properties:
             if (key == RSKeys.Identify.Traits.birthday) {
-                identifyDateAndCustomUserAttribute(value: value, key: RSKeys.Identify.Traits.birthday)
+                handleDateAndCustomUserAttribute(value: value, key: RSKeys.Identify.Traits.birthday)
             } else if (key == RSKeys.Identify.Traits.address) {
                 MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: RSKeys.Identify.Traits.address)
             } else if (key == RSKeys.Identify.Traits.age) {
@@ -187,15 +187,15 @@ extension RSMoEngageDestination {
                     case RSKeys.Identify.Traits.lastName: MoEngageSDKAnalytics.sharedInstance.setLastName(stringValue)
                     case RSKeys.Identify.Traits.gender: MoEngageSDKAnalytics.sharedInstance.setGender(getCorrectGender(userGender: stringValue))
                     default:
-                        identifyDateAndCustomUserAttribute(value: value, key: key)
+                        handleDateAndCustomUserAttribute(value: value, key: key)
                 }
             } else {
-                identifyDateAndCustomUserAttribute(value: value, key: key)
+                handleDateAndCustomUserAttribute(value: value, key: key)
             }
         }
     }
     
-    private func identifyDateAndCustomUserAttribute(value: Any, key: String) {
+    private func handleDateAndCustomUserAttribute(value: Any, key: String) {
         if let date = value as? Date {
             let epochTime = date.timeIntervalSince1970
             MoEngageSDKAnalytics.sharedInstance.setUserAttributeEpochTime(epochTime, withAttributeName: key)
