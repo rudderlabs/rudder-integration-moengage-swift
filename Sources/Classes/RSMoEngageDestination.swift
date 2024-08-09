@@ -167,47 +167,43 @@ extension RSMoEngageDestination: RSPushNotifications {
 extension RSMoEngageDestination {
     func handle(traits: [String: Any]) {
         for (key, value) in traits {
-            guard value is String || value is NSNumber || value is Date else {
-                continue
+            // Non-Standard properties:
+            if (key == RSKeys.Identify.Traits.birthday) {
+                identifyDateAndCustomUserAttribute(value: value, key: RSKeys.Identify.Traits.birthday)
+            } else if (key == RSKeys.Identify.Traits.address) {
+                MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: RSKeys.Identify.Traits.address)
+            } else if (key == RSKeys.Identify.Traits.age) {
+                MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: RSKeys.Identify.Traits.age)
             }
-            
-            switch key {
-            case RSKeys.Identify.Traits.email:
-                handleEmail(value: value)
-            case RSKeys.Identify.Traits.name:
-                handleName(value: value)
-            case RSKeys.Identify.Traits.phone:
-                handlePhone(value: value)
-            case RSKeys.Identify.Traits.firstName:
-                handleFirstName(value: value)
-            case RSKeys.Identify.Traits.lastName:
-                handleLastName(value: value)
-            case RSKeys.Identify.Traits.gender:
-                handleGender(value: value)
-            case RSKeys.Identify.Traits.birthday:
-                handleBirthday(value: value, key: RSKeys.Identify.Traits.birthday)
-            case RSKeys.Identify.Traits.address:
-                handleAddress(value: value)
-            case RSKeys.Identify.Traits.age:
-                handleAge(value: value)
-            default:
-                handleCustomAttribute(value: value, key: key)
+            // Standard properties:
+            else if let stringValue = value as? String {
+                switch key {
+                    case RSKeys.Identify.Traits.email:
+                        MoEngageSDKAnalytics.sharedInstance.setEmailID(stringValue)
+                    case RSKeys.Identify.Traits.name:
+                        MoEngageSDKAnalytics.sharedInstance.setName(stringValue)
+                    case RSKeys.Identify.Traits.phone: MoEngageSDKAnalytics.sharedInstance.setMobileNumber(stringValue)
+                    case RSKeys.Identify.Traits.firstName: MoEngageSDKAnalytics.sharedInstance.setFirstName(stringValue)
+                    case RSKeys.Identify.Traits.lastName: MoEngageSDKAnalytics.sharedInstance.setLastName(stringValue)
+                    case RSKeys.Identify.Traits.gender: MoEngageSDKAnalytics.sharedInstance.setGender(getCorrectGender(userGender: stringValue))
+                    default:
+                        identifyDateAndCustomUserAttribute(value: value, key: key)
+                }
+            } else {
+                identifyDateAndCustomUserAttribute(value: value, key: key)
             }
         }
     }
     
-    func identifyDateUserAttribute(value: Any?, key: String?) {
-        if let key = key {
-            // Verify if the value is of type Date or not
-            // Track UserAttribute using Epoch value. Refer here: https://developers.moengage.com/hc/en-us/articles/4403905883796-Tracking-User-Attributes
-            if let value = value as? String, let convertedDate = dateFrom(isoDateString: value) {
-                MoEngageSDKAnalytics.sharedInstance.setUserAttribute(convertDateToTimestamp(date: convertedDate), withAttributeName: key)
-               
-            } else if let value = value as? Date {
-                MoEngageSDKAnalytics.sharedInstance.setUserAttributeDate(value, withAttributeName: key)
-            } else {
-                MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: key)
-            }
+    private func identifyDateAndCustomUserAttribute(value: Any, key: String) {
+        if let date = value as? Date {
+            let epochTime = date.timeIntervalSince1970
+            MoEngageSDKAnalytics.sharedInstance.setUserAttributeEpochTime(epochTime, withAttributeName: key)
+        } else if let dateString = value as? String, let date = ISO8601DateFormatter().date(from: dateString) {
+            let epochTime = date.timeIntervalSince1970
+            MoEngageSDKAnalytics.sharedInstance.setUserAttributeEpochTime(epochTime, withAttributeName: key)
+        } else {
+            MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: key)
         }
     }
     
@@ -239,74 +235,6 @@ extension RSMoEngageDestination {
             return .others
         default:
             return .others
-        }
-    }
-    
-    
-    //MARK: handle user inpur data
-    private func handleEmail(value: Any) {
-        if let email = value as? String {
-            MoEngageSDKAnalytics.sharedInstance.setEmailID(email)
-        }
-    }
-
-    private func handleName(value: Any) {
-        if let name = value as? String {
-            MoEngageSDKAnalytics.sharedInstance.setName(name)
-        }
-    }
-
-    private func handlePhone(value: Any) {
-        if let phone = value as? String {
-            MoEngageSDKAnalytics.sharedInstance.setMobileNumber(phone)
-        }
-    }
-
-    private func handleFirstName(value: Any) {
-        if let firstName = value as? String {
-            MoEngageSDKAnalytics.sharedInstance.setFirstName(firstName)
-        }
-    }
-
-    private func handleLastName(value: Any) {
-        if let lastName = value as? String {
-            MoEngageSDKAnalytics.sharedInstance.setLastName(lastName)
-        }
-    }
-
-    private func handleGender(value: Any) {
-        if let gender = value as? String {
-            MoEngageSDKAnalytics.sharedInstance.setGender(getCorrectGender(userGender: gender))
-        }
-    }
-
-    private func handleBirthday(value: Any, key: String) {
-        if let date = value as? Date {
-            let epochTime = date.timeIntervalSince1970
-            MoEngageSDKAnalytics.sharedInstance.setUserAttributeEpochTime(epochTime, withAttributeName: key)
-        } else if let dateString = value as? String, let date = ISO8601DateFormatter().date(from: dateString) {
-            let epochTime = date.timeIntervalSince1970
-            MoEngageSDKAnalytics.sharedInstance.setUserAttributeEpochTime(epochTime, withAttributeName: key)
-        }
-    }
-
-    private func handleAddress(value: Any) {
-        MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: RSKeys.Identify.Traits.address)
-    }
-
-    private func handleAge(value: Any) {
-        MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: RSKeys.Identify.Traits.age)
-    }
-
-    private func handleCustomAttribute(value: Any, key: String) {
-        if let date = value as? Date {
-            let epochTime = date.timeIntervalSince1970
-            MoEngageSDKAnalytics.sharedInstance.setUserAttributeEpochTime(epochTime, withAttributeName: key)
-        } else if let dateString = value as? String, let date = ISO8601DateFormatter().date(from: dateString) {
-            let epochTime = date.timeIntervalSince1970
-            MoEngageSDKAnalytics.sharedInstance.setUserAttributeEpochTime(epochTime, withAttributeName: key)
-        } else {
-            MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: key)
         }
     }
 }
