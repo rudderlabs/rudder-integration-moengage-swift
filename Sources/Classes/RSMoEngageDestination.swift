@@ -175,22 +175,24 @@ extension RSMoEngageDestination {
             } else if (key == RSKeys.Identify.Traits.age) {
                 MoEngageSDKAnalytics.sharedInstance.setUserAttribute(value, withAttributeName: RSKeys.Identify.Traits.age)
             }
-            // Standard properties:
-            else if let stringValue = value as? String {
-                switch key {
-                    case RSKeys.Identify.Traits.email:
-                        MoEngageSDKAnalytics.sharedInstance.setEmailID(stringValue)
-                    case RSKeys.Identify.Traits.name:
-                        MoEngageSDKAnalytics.sharedInstance.setName(stringValue)
-                    case RSKeys.Identify.Traits.phone: MoEngageSDKAnalytics.sharedInstance.setMobileNumber(stringValue)
-                    case RSKeys.Identify.Traits.firstName: MoEngageSDKAnalytics.sharedInstance.setFirstName(stringValue)
-                    case RSKeys.Identify.Traits.lastName: MoEngageSDKAnalytics.sharedInstance.setLastName(stringValue)
-                    case RSKeys.Identify.Traits.gender: MoEngageSDKAnalytics.sharedInstance.setGender(getCorrectGender(userGender: stringValue))
-                    default:
-                        handleDateAndCustomUserAttribute(value: value, key: key)
+            else {
+                // Standard properties:
+                if let stringValue = value as? String {
+                    switch key {
+                        case RSKeys.Identify.Traits.email:
+                            MoEngageSDKAnalytics.sharedInstance.setEmailID(stringValue)
+                        case RSKeys.Identify.Traits.name:
+                            MoEngageSDKAnalytics.sharedInstance.setName(stringValue)
+                        case RSKeys.Identify.Traits.phone: MoEngageSDKAnalytics.sharedInstance.setMobileNumber(stringValue)
+                        case RSKeys.Identify.Traits.firstName: MoEngageSDKAnalytics.sharedInstance.setFirstName(stringValue)
+                        case RSKeys.Identify.Traits.lastName: MoEngageSDKAnalytics.sharedInstance.setLastName(stringValue)
+                        case RSKeys.Identify.Traits.gender: MoEngageSDKAnalytics.sharedInstance.setGender(getCorrectGender(userGender: stringValue))
+                        default:
+                            handleDateAndCustomUserAttribute(value: value, key: key)
+                    }
+                } else {
+                    handleDateAndCustomUserAttribute(value: value, key: key)
                 }
-            } else {
-                handleDateAndCustomUserAttribute(value: value, key: key)
             }
         }
     }
