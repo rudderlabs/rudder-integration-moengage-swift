@@ -39,6 +39,10 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
         }
        
         let sdkConfig = MoEngageSDKConfig(appId: moEngageConfig.apiId, dataCenter: moEngageDataCenter!)
+        
+        if client?.configuration?.logLevel != .none {
+            sdkConfig.consoleLogConfig = MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: MoEngageCore.MoEngageLoggerType.debug)
+        }
     
         // Check if debug mode is on or off
 #if DEBUG
@@ -76,7 +80,17 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
         return message
     }
     
-    
+    func getMoEngageLogLevel(logLevel: RSLogLevel) -> MoEngageCore.MoEngageConsoleLogConfig {
+        if (logLevel == RSLogLevel.error) {
+            return MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: MoEngageCore.MoEngageLoggerType.error)
+        } else if (logLevel == RSLogLevel.warning) {
+            return MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: MoEngageCore.MoEngageLoggerType.warning)
+        } else if (logLevel == RSLogLevel.info) {
+            return MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: MoEngageCore.MoEngageLoggerType.info)
+        } else if (logLevel == RSLogLevel.debug) {
+            return MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: MoEngageCore.MoEngageLoggerType.verbose)
+        }
+    }
 
 
     func track(message: TrackMessage) -> TrackMessage? {
