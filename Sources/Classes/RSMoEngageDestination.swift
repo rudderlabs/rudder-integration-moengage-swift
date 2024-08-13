@@ -45,6 +45,12 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
         if client?.configuration?.logLevel != .none {
             sdkConfig.consoleLogConfig = MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: MoEngageCore.MoEngageLoggerType.debug)
         }
+        if client?.configuration?.logLevel != .none {
+            sdkConfig.consoleLogConfig = getMoEngageLogLevel(logLevel: client?.configuration?.logLevel)
+        }
+        
+      
+       
 
         // Check if debug mode is on or off
 #if DEBUG
@@ -139,6 +145,18 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
        MoEngageSDKAnalytics.sharedInstance.flush()
        client?.log(message: "MoEngage Flush API: 'MoEngage.sharedInstance().flush()' is called.", logLevel: .debug)
     }
+    
+    func getMoEngageLogLevel(logLevel: RSLogLevel) -> MoEngageCore.MoEngageConsoleLogConfig {
+            if (logLevel == RSLogLevel.error) {
+                return MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: MoEngageCore.MoEngageLoggerType.error)
+            } else if (logLevel == RSLogLevel.warning) {
+                return MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: MoEngageCore.MoEngageLoggerType.warning)
+            } else if (logLevel == RSLogLevel.info) {
+                return MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: MoEngageCore.MoEngageLoggerType.info)
+            } else if (logLevel == RSLogLevel.debug) {
+                return MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: MoEngageCore.MoEngageLoggerType.verbose)
+            }
+        }
     
 }
 
