@@ -36,13 +36,14 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
         }
         else{
             client?.log(message:"MoEngage SDK initialization terminated due to an invalid region.", logLevel: .warning)
+            return
         }
        
         let sdkConfig = MoEngageSDKConfig(appId: moEngageConfig.apiId, dataCenter: moEngageDataCenter!)
         
         //enable debugging
         if client?.configuration?.logLevel != .none {
-            MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: MoEngageCore.MoEngageLoggerType.debug)
+            sdkConfig.consoleLogConfig = MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: MoEngageCore.MoEngageLoggerType.debug)
         }
 
         // Check if debug mode is on or off
