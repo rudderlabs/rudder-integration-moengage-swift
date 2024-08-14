@@ -21,8 +21,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    RSConfig *config = [[RSConfig alloc] initWithWriteKey:@"2k3Dk3s8vs7Y8JPoCfWPQd4Pm54"];
-    [config dataPlaneURL:@"https://rudderstacuodq.dataplane.rudderstack.com"];
+    RSConfig *config = [[RSConfig alloc] initWithWriteKey:@"<WRITE_KEY>"];
+    [config dataPlaneURL:@"<DATA_PLANE_URL>"];
     [config loglevel:RSLogLevelVerbose];
     [config trackLifecycleEvents:YES];
     [config recordScreenViews:YES];
@@ -33,21 +33,36 @@
     [client addDestination:[[RudderMoEngageDestination alloc] init]];
     [client track:@"Track 1"];
     
-    if (@available(iOS 10.0, *)) {
-        UNUserNotificationCenter.currentNotificationCenter.delegate = self;
-    }
-   
+//    if (@available(iOS 10.0, *)) {
+//        UNUserNotificationCenter.currentNotificationCenter.delegate = self;
+//    }
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound + UNAuthorizationOptionBadge)
+                              completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                                  if (!error) {
+                                      NSLog(@"Request authorization succeeded!");
+                                  }
+                              }];
+        
+        // Register with APNs
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    [[MoEngageSDKMessaging sharedInstance] registerForRemoteNotificationWithCategories:nil andUserNotificationCenterDelegate:self];
+    
+ 
     
     return YES;
 }
-
 
 
 #pragma mark - UISceneSession lifecycle
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [[RSClient sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
- 
+    NSString *deviceTokenString = [self deviceTokenToString:deviceToken];
+        NSLog(@"Device Token: %@", deviceTokenString);
+    //[[MoEngageSDKMessaging sharedInstance] setPushToken:deviceToken];
+    
+    [[RSClient sharedInstance] setDeviceToken:deviceTokenString];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
@@ -63,6 +78,22 @@
 }
 
 
+- (NSString *)deviceTokenToString:(NSData *)deviceToken {
+    const unsigned char *dataBuffer = (const unsigned char *)[deviceToken bytes];
+    
+    if (!dataBuffer) {
+        return [NSString string];
+    }
+    
+    NSUInteger dataLength = [deviceToken length];
+    NSMutableString *hexString = [NSMutableString stringWithCapacity:(dataLength * 2)];
+    
+    for (int i = 0; i < dataLength; ++i) {
+        [hexString appendFormat:@"%02x", dataBuffer[i]];
+    }
+    
+    return [NSString stringWithString:hexString];
+}
 
 
 - (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
