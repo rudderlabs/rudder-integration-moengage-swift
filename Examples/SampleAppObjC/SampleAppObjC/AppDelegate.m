@@ -9,6 +9,7 @@
 
 @import Rudder;
 @import RudderMoEngage;
+@import MoEngageSDK;
 #import <UserNotifications/UserNotifications.h>
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
@@ -20,8 +21,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    RSConfig *config = [[RSConfig alloc] initWithWriteKey:@"<WRITE_KEY>"];
-    [config dataPlaneURL:@"<DATA_PLANE_URL>"];
+    RSConfig *config = [[RSConfig alloc] initWithWriteKey:@"2k3Dk3s8vs7Y8JPoCfWPQd4Pm54"];
+    [config dataPlaneURL:@"https://rudderstacuodq.dataplane.rudderstack.com"];
     [config loglevel:RSLogLevelVerbose];
     [config trackLifecycleEvents:YES];
     [config recordScreenViews:YES];
@@ -35,15 +36,18 @@
     if (@available(iOS 10.0, *)) {
         UNUserNotificationCenter.currentNotificationCenter.delegate = self;
     }
+   
+    
     return YES;
 }
+
 
 
 #pragma mark - UISceneSession lifecycle
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [[RSClient sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
-
+ 
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
@@ -57,6 +61,8 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     [[RSClient sharedInstance] application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
 }
+
+
 
 
 - (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {

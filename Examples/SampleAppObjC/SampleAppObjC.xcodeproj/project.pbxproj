@@ -20,6 +20,7 @@
 /* Begin PBXFileReference section */
 		19B6062B17239ADFE2C3A8D1 /* Pods_SampleAppObjC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SampleAppObjC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		48449361100A5BC94930FCDC /* Pods-SampleAppObjC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleAppObjC.debug.xcconfig"; path = "Target Support Files/Pods-SampleAppObjC/Pods-SampleAppObjC.debug.xcconfig"; sourceTree = "<group>"; };
+		990922202C6BB3550071C6D6 /* SampleAppObjC.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SampleAppObjC.entitlements; sourceTree = "<group>"; };
 		D2416FCCDF8938B9658A5B89 /* Pods-SampleAppObjC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleAppObjC.release.xcconfig"; path = "Target Support Files/Pods-SampleAppObjC/Pods-SampleAppObjC.release.xcconfig"; sourceTree = "<group>"; };
 		EDB7217F27DB4F70000EE8C4 /* SampleAppObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleAppObjC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDB7218227DB4F70000EE8C4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -86,6 +87,7 @@
 		EDB7218127DB4F70000EE8C4 /* SampleAppObjC */ = {
 			isa = PBXGroup;
 			children = (
+				990922202C6BB3550071C6D6 /* SampleAppObjC.entitlements */,
 				EDB7218227DB4F70000EE8C4 /* AppDelegate.h */,
 				EDB7218327DB4F70000EE8C4 /* AppDelegate.m */,
 				EDB7218527DB4F70000EE8C4 /* SceneDelegate.h */,
@@ -363,6 +365,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SampleAppObjC/SampleAppObjC.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UCL2K3J73M;
@@ -393,6 +396,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SampleAppObjC/SampleAppObjC.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UCL2K3J73M;
