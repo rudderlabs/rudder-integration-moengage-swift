@@ -43,9 +43,6 @@ class RSMoEngageDestination: NSObject, RSDestinationPlugin, UNUserNotificationCe
         
         //enable debugging
         if client?.configuration?.logLevel != .none {
-            sdkConfig.consoleLogConfig = MoEngageCore.MoEngageConsoleLogConfig(isLoggingEnabled: true, loglevel: MoEngageCore.MoEngageLoggerType.debug)
-        }
-        if client?.configuration?.logLevel != .none {
             sdkConfig.consoleLogConfig = getMoEngageLogLevel(client?.configuration?.logLevel)
         }
         
