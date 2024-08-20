@@ -33,22 +33,10 @@
     [client addDestination:[[RudderMoEngageDestination alloc] init]];
     [client track:@"Track 1"];
     
-//    if (@available(iOS 10.0, *)) {
-//        UNUserNotificationCenter.currentNotificationCenter.delegate = self;
-//    }
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-        [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound + UNAuthorizationOptionBadge)
-                              completionHandler:^(BOOL granted, NSError * _Nullable error) {
-                                  if (!error) {
-                                      NSLog(@"Request authorization succeeded!");
-                                  }
-                              }];
-        
-        // Register with APNs
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-    [[MoEngageSDKMessaging sharedInstance] registerForRemoteNotificationWithCategories:nil andUserNotificationCenterDelegate:self];
-    
- 
+    if (@available(iOS 10.0, *)) {
+        UNUserNotificationCenter.currentNotificationCenter.delegate = self;
+    }
+   
     
     return YES;
 }
@@ -58,11 +46,7 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [[RSClient sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
-    NSString *deviceTokenString = [self deviceTokenToString:deviceToken];
-        NSLog(@"Device Token: %@", deviceTokenString);
-    //[[MoEngageSDKMessaging sharedInstance] setPushToken:deviceToken];
     
-    [[RSClient sharedInstance] setDeviceToken:deviceTokenString];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {

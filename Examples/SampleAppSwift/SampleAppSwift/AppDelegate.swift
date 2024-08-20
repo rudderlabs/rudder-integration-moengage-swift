@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        let config: RSConfig = RSConfig(writeKey: "<WRITE_KEY>")
-            .dataPlaneURL("<DATA_PLANE_URL>")
+        let config: RSConfig = RSConfig(writeKey: "2k3Dk3s8vs7Y8JPoCfWPQd4Pm54")
+            .dataPlaneURL("https://rudderstacuodq.dataplane.rudderstack.com")
             .loglevel(.debug)
             .trackLifecycleEvents(false)
             .recordScreenViews(false)
