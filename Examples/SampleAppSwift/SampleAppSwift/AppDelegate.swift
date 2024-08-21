@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        let config: RSConfig = RSConfig(writeKey: "27COeQCO3BS2WMw8CJUqYRC5hL7")
-            .dataPlaneURL("https://rudderstacbumvdrexzj.dataplane.rudderstack.com")
+        let config: RSConfig = RSConfig(writeKey: "<WRITE_KEY>")
+            .dataPlaneURL("DATA_PLANE_URL>")
             .loglevel(.debug)
             .trackLifecycleEvents(false)
             .recordScreenViews(false)
@@ -30,7 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         client?.addDestination(RudderMoEngageDestination())
 
-        sendEvents()
+        //sendEvents()
+        sendIdentifyEvents()
 
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
@@ -109,12 +110,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func sendIdentifyEvents() {
-        client?.identify("iOS User with traits 2", traits: [
+        client?.identify("New User 2", traits: [
             "key": "Value",
             "date": Date(),
-            "email": "random@example.com",
+            "email": "User1@gmail.com",
             "name": "Full Name",
-            "phone": 1234567890,
+            "phone": "1234567890",
             "firstName": "FName",
             "lastName": "LName",
             "gender": "Male",

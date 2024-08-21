@@ -11,7 +11,7 @@ end
 target 'RudderMoEngage' do
     project 'RudderMoEngage.xcodeproj'
     shared_pods
-    pod 'MoEngage-iOS-SDK', '~> 6.1.0'
+   
 end
 
 target 'SampleAppObjC' do

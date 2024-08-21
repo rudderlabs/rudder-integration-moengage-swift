@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Rudder
 
 class ViewController: UIViewController {
 
@@ -47,6 +48,8 @@ class ViewController: UIViewController {
             "date_key": Date(),
             "url_key": URL(fileURLWithPath: "https://rudderstack.com")
         ])*/
+        
+
     }
 
 }

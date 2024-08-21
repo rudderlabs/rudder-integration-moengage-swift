@@ -9,6 +9,7 @@
 
 @import Rudder;
 @import RudderMoEngage;
+@import MoEngageSDK;
 #import <UserNotifications/UserNotifications.h>
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
@@ -20,9 +21,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    RSConfig *config = [[RSConfig alloc] initWithWriteKey:@"27COeQCO3BS2WMw8CJUqYRC5hL7"];
-    [config dataPlaneURL:@"https://rudderstacz.dataplane.rudderstack.com"];
-    [config loglevel:RSLogLevelDebug];
+    RSConfig *config = [[RSConfig alloc] initWithWriteKey:@"<WRITE_KEY>"];
+    [config dataPlaneURL:@"<DATA_PLANE_URL>"];
+    [config loglevel:RSLogLevelVerbose];
     [config trackLifecycleEvents:YES];
     [config recordScreenViews:YES];
     
@@ -35,6 +36,8 @@
     if (@available(iOS 10.0, *)) {
         UNUserNotificationCenter.currentNotificationCenter.delegate = self;
     }
+   
+    
     return YES;
 }
 
@@ -43,7 +46,7 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     [[RSClient sharedInstance] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
-
+    
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
@@ -56,6 +59,24 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     [[RSClient sharedInstance] application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+}
+
+
+- (NSString *)deviceTokenToString:(NSData *)deviceToken {
+    const unsigned char *dataBuffer = (const unsigned char *)[deviceToken bytes];
+    
+    if (!dataBuffer) {
+        return [NSString string];
+    }
+    
+    NSUInteger dataLength = [deviceToken length];
+    NSMutableString *hexString = [NSMutableString stringWithCapacity:(dataLength * 2)];
+    
+    for (int i = 0; i < dataLength; ++i) {
+        [hexString appendFormat:@"%02x", dataBuffer[i]];
+    }
+    
+    return [NSString stringWithString:hexString];
 }
 
 
