@@ -7,7 +7,7 @@ jobs:
   deploy-cocoapods-manual:
     name: Manually deploy to Cocoapods
     runs-on: macOS-latest
-    if: startsWith(github.ref, 'refs/heads/master')
+    if: startsWith(github.ref, 'refs/heads/main')
     steps:
       - name: Checkout source branch
         uses: actions/checkout@v4
